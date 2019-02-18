@@ -19,7 +19,7 @@ type Config interface {
 	GetBool(key string) bool
 	GetInt(key string) int
 	GetStrings(key string) []string
-	GetStringToArray(key string) []string
+	GetStringSlice(key string) []string
 	Init()
 }
 
@@ -58,12 +58,12 @@ func (v *viperConfig) GetBool(key string) bool {
 	return viper.GetBool(key)
 }
 
-func (v *viperConfig) GetStrings(key string) (c []string) {
+func (v *viperConfig) GetStringSlice(key string) (c []string) {
 	c = viper.GetStringSlice(key)
 	return
 }
 
-func (v *viperConfig) GetStringToArray(key string) (c []string) {
+func (v *viperConfig) GetStrings(key string) (c []string) {
 	val := viper.GetString(key)
 	c = strings.Split(val, ",")
 	return
