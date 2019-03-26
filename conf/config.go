@@ -20,12 +20,12 @@ type Config interface {
 	GetInt(key string) int
 	GetStrings(key string) []string
 	GetStringSlice(key string) []string
-	Init()
+	Init(string)
 }
 
 type viperConfig struct{}
 
-func (v *viperConfig) Init() {
+func (v *viperConfig) Init(prefix string) {
 	viper.SetEnvPrefix(`go-clean`)
 	viper.AutomaticEnv()
 
@@ -33,6 +33,10 @@ func (v *viperConfig) Init() {
 	env := "env"
 	if osEnv != "" {
 		env = osEnv
+	}
+
+	if prefix != "" {
+		env = prefix + "." + env
 	}
 
 	replacer := strings.NewReplacer(`.`, `_`)
@@ -71,6 +75,13 @@ func (v *viperConfig) GetStrings(key string) (c []string) {
 
 func NewConfig() Config {
 	v := &viperConfig{}
-	v.Init()
+	v.Init("")
+	return v
+}
+
+func NewWithPrefix() Config {
+	v := &viperConfig{}
+	prefix := v.GetString("prefix")
+	v.Init(prefix)
 	return v
 }
