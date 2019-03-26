@@ -8,6 +8,7 @@ package conf
  **/
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -82,6 +83,7 @@ func NewConfig() Config {
 func NewWithPrefix() Config {
 	v := &viperConfig{}
 	prefix := v.GetString("prefix")
+	fmt.Println("Init config with prefix", prefix)
 	v.Init(prefix)
 	return v
 }
