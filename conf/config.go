@@ -51,6 +51,10 @@ func (v *viperConfig) Init(prefix string) {
 	}
 }
 
+func (v *viperConfig) SetConfig(key string, value interface{}) {
+	viper.Set(key, value)
+}
+
 func (v *viperConfig) GetString(key string) string {
 	return viper.GetString(key)
 }
