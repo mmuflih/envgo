@@ -16,6 +16,7 @@ import (
 )
 
 type Config interface {
+	SetConfig(key string, value interface{})
 	GetString(key string) string
 	GetBool(key string) bool
 	GetInt(key string) int
