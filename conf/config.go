@@ -40,11 +40,12 @@ func (v *viperConfig) Init(prefix string) {
 	if prefix != "" {
 		env = prefix + "." + env
 	}
-
+	envPath := v.getPath()
+	fmt.Println("Environment path:", envPath)
 	replacer := strings.NewReplacer(`.`, `_`)
 	viper.SetEnvKeyReplacer(replacer)
 	viper.SetConfigType(`json`)
-	viper.SetConfigFile(env + `.json`)
+	viper.SetConfigFile(envPath + env + `.json`)
 	err := viper.ReadInConfig()
 
 	if err != nil {
@@ -91,4 +92,23 @@ func NewWithPrefix() Config {
 	fmt.Println("Init config with prefix", prefix)
 	v.Init(prefix)
 	return v
+}
+
+func (v *viperConfig) getPath() string {
+	args := os.Args
+	fmt.Println(args)
+	for _, arg := range args {
+		if strings.Contains(arg, "--env") {
+			envs := strings.Split(arg, "=")
+			if len(envs) > 1 {
+				path := envs[1]
+				if path[len(path)-1:] == "/" {
+					return path
+				} else {
+					return path + "/"
+				}
+			}
+		}
+	}
+	return ""
 }
